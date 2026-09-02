@@ -141,6 +141,14 @@ class Application
      */
     static void giveFocus(View* view);
 
+    /**
+     * Drop Application pointers to a view that is being destroyed.
+     * giveFocus(nullptr) is a no-op (it only switches when the target has a
+     * default focus), so ~View must call this or currentFocus / focusStack
+     * dangle until the next pushActivity describe() / frameHighlight.
+     */
+    static void forgetView(View* view);
+
     inline static Style getStyle()
     {
         return brls::getStyle();

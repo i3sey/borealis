@@ -902,6 +902,18 @@ void Application::giveFocus(View* view)
     }
 }
 
+void Application::forgetView(View* view)
+{
+    if (!view)
+        return;
+    if (Application::currentFocus == view)
+        Application::currentFocus = nullptr;
+    if (Application::repetitionOldFocus == view)
+        Application::repetitionOldFocus = nullptr;
+    auto& stack = Application::focusStack;
+    stack.erase(std::remove(stack.begin(), stack.end(), view), stack.end());
+}
+
 bool Application::popActivity(TransitionAnimation animation, std::function<void(void)> cb, bool free)
 {
     if (Application::activitiesStack.size() <= 1) // never pop the first activity

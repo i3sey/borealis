@@ -1528,9 +1528,9 @@ View::~View()
         }
     }
 
-    // Focus sanity check
-    if (Application::getCurrentFocus() == this)
-        Application::giveFocus(nullptr);
+    // giveFocus(nullptr) does not clear currentFocus (it only switches when
+    // the target has a default focus). Drop raw pointers before this is freed.
+    Application::forgetView(this);
 
     Application::tryDeinitFirstResponder(this);
     for (GestureRecognizer* recognizer : this->gestureRecognizers)
